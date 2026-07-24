@@ -1,0 +1,231 @@
+openapi: 3.0.3
+info:
+  title: Account Service API
+  description: |
+    Account Service manages bank financial products.
+
+    Responsibilities:
+      - Create bank accounts
+      - Manage account status
+      - Register deposits and withdrawals
+      - Consult balances
+      - Consult account movements
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8082'
+tags:
+  - name: Accounts
+    description: Account management
+  - name: Transactions
+    description: Account transactions
+paths:
+  /api/v1/accounts:
+    post:
+      tags:
+        - Accounts
+      summary: Create account
+      operationId: createAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+    get:
+      tags:
+        - Accounts
+      summary: Find customer accounts
+      operationId: findAccounts
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/AccountStatus'
+      responses:
+        '200':
+          description: Accounts found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse'
+  '/api/v1/accounts/{accountId}':
+    get:
+      tags:
+        - Accounts
+      summary: Find account by id
+      operationId: findAccountById
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags:
+        - Accounts
+      summary: Disable account
+      operationId: disableAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Account disabled
+  '/api/v1/accounts/{accountId}/balance':
+    get:
+      tags:
+        - Accounts
+      summary: Get account balance
+      operationId: getBalance
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+
+components:
+  schemas:
+    AccountRequest:
+      type: object
+      required:
+        - customerId
+        - accountType
+      properties:
+        customerId:
+          type: string
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        currency:
+          type: string
+          example: PEN
+        initialBalance:
+          type: number
+          format: double
+        holders:
+          type: array
+          items:
+            type: string
+        authorizedSigners:
+          type: array
+          items:
+            type: string
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        accountNumber:
+          type: string
+          example: 001123456789
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        balance:
+          type: number
+          format: double
+        currency:
+          type: string
+        status:
+          $ref: '#/components/schemas/AccountStatus'
+        createdAt:
+          type: string
+          format: date-time
+    BalanceResponse:
+      type: object
+      properties:
+        accountId:
+          type: string
+        balance:
+          type: number
+          format: double
+        availableBalance:
+          type: number
+          format: double
+    AccountType:
+      type: string
+      enum:
+        - SAVINGS
+        - CHECKING
+        - FIXED_TERM
+    AccountStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+    TransactionType:
+      type: string
+      enum:
+        - DEPOSIT
+        - WITHDRAWAL
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        traceId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Conflict:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

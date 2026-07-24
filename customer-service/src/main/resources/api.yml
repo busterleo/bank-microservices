@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: Customer Service API
+  description: |
+    Customer Service is responsible for managing bank customers.
+
+    Responsibilities:
+      - Register customers
+      - Update customer information
+      - Retrieve customer information
+      - Disable customers
+
+    This service owns only customer data.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Local Environment
+tags:
+  - name: Customers
+    description: Customer management operations
+paths:
+  /api/v1/customers:
+    post:
+      tags:
+        - Customers
+      summary: Create customer
+      operationId: createCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerRequest"
+            examples:
+              personal:
+                value:
+                  customerType: PERSONAL
+                  documentType: DNI
+                  documentNumber: "72889999"
+                  firstName: Juan
+                  lastName: Perez
+                  email: juan@email.com
+                  phone: "+51999999999"
+                  address: Lima
+              business:
+                value:
+                  customerType: BUSINESS
+                  documentType: RUC
+                  documentNumber: "20547896512"
+                  businessName: ABC Corporation
+                  email: contact@abc.com
+                  phone: "+5114445555"
+                  address: Lima
+      responses:
+        "201":
+          description: Customer created successfully
+          headers:
+            Location:
+              description: URI of created resource
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    get:
+      tags:
+        - Customers
+      summary: Find customers
+      operationId: findCustomers
+      parameters:
+        - name: customerType
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/CustomerType"
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/CustomerStatus"
+        - name: documentNumber
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: Customers found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPageResponse"
+  /api/v1/customers/{customerId}:
+    get:
+      tags:
+        - Customers
+      summary: Find customer by id
+      operationId: findCustomerById
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - Customers
+      summary: Update customer
+      operationId: updateCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerUpdateRequest"
+      responses:
+        "200":
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    patch:
+      tags:
+        - Customers
+      summary: Disable customer
+      operationId: disableCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Customer disabled successfully
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/v1/customers/document/{documentNumber}:
+    get:
+      tags:
+        - Customers
+      summary: Find customer by document number
+      operationId: findCustomerByDocument
+      parameters:
+        - name: documentNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+components:
+  schemas:
+    CustomerUpdateRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        businessName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+    CustomerRequest:
+      type: object
+      required:
+        - customerType
+        - documentType
+        - documentNumber
+      properties:
+        customerType:
+          $ref: "#/components/schemas/CustomerType"
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+        documentNumber:
+          type: string
+          example: "72889999"
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Perez
+        businessName:
+          type: string
+          example: ABC Corporation
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        address:
+          type: string
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: CUS-000001
+        customerType:
+          $ref: "#/components/schemas/CustomerType"
+        documentType:
+          $ref: "#/components/schemas/DocumentType"
+        documentNumber:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        businessName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        status:
+          $ref: "#/components/schemas/CustomerStatus"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CustomerPageResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/CustomerResponse"
+    CustomerType:
+      type: string
+      enum:
+        - PERSONAL
+        - BUSINESS
+    CustomerStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+    DocumentType:
+      type: string
+      enum:
+        - DNI
+        - PASSPORT
+        - CE
+        - RUC
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: CUSTOMER_NOT_FOUND
+        message:
+          type: string
+          example: Customer not found
+        path:
+          type: string
+          example: /api/v1/customers/CUS-000001
+        traceId:
+          type: string
+          example: 6c4ef02a2d13e44f
+        timestamp:
+          type: string
+          format: date-time
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

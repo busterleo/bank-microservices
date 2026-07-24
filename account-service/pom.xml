@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.bank</groupId>
+	<artifactId>account-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>account-service</name>
+	<description>Account Microservice</description>
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2025.0.0</spring-cloud.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
+		<resilience4j.version>2.3.0</resilience4j.version>
+		<springdoc.version>2.8.9</springdoc.version>
+	</properties>
+	<dependencies>
+		<!-- ============================= -->
+		<!-- SPRING WEBFLUX -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- MONGODB REACTIVE -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- VALIDATION -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- ACTUATOR -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- SPRING CLOUD CONFIG -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- EUREKA CLIENT -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<!-- ============================= -->
+		<!-- RESILIENCE4J REACTOR -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-spring-boot3</artifactId>
+			<version>${resilience4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-spring6</artifactId>
+			<version>${resilience4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-reactor</artifactId>
+			<version>${resilience4j.version}</version>
+		</dependency>
+		<!-- ============================= -->
+		<!-- LOMBOK -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- ============================= -->
+		<!-- MAPSTRUCT -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- ============================= -->
+		<!-- OPENAPI WEBFLUX -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<!-- ============================= -->
+		<!-- OPENAPI NULLABLE SUPPORT -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.6</version>
+		</dependency>
+		<!-- ============================= -->
+		<!-- TEST -->
+		<!-- ============================= -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mongodb</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<!-- ============================= -->
+			<!-- SPRING BOOT -->
+			<!-- ============================= -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- ============================= -->
+			<!-- COMPILER -->
+			<!-- ============================= -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>17</source>
+					<target>17</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<!-- ============================= -->
+			<!-- OPENAPI GENERATOR -->
+			<!-- ============================= -->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.10.0</version>
+				<executions>
+					<execution>
+						<id>generate-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>
+								${project.basedir}/src/main/resources/api.yml
+							</inputSpec>
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+							<apiPackage>
+								com.bank.account.infrastructure.web.api
+							</apiPackage>
+							<modelPackage>
+								com.bank.account.infrastructure.web.dto
+							</modelPackage>
+							<configOptions>
+								<useSpringBoot3>true</useSpringBoot3>
+								<interfaceOnly>true</interfaceOnly>
+								<reactive>true</reactive>
+								<useBeanValidation>true</useBeanValidation>
+								<useTags>true</useTags>
+								<dateLibrary>java17</dateLibrary>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- ====== CHECKSTYLE ====== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>10.12.5</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<configLocation>src/main/resources/google_checks.xml</configLocation>
+					<failOnViolation>true</failOnViolation>
+					<violationSeverity>warning</violationSeverity>
+					<sourceDirectories>
+						<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+						<sourceDirectory>${project.basedir}/src/test/java</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- ====== Corregir imports,tabulaciones,espacios ====== -->
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.43.0</version>
+
+				<configuration>
+					<java>
+						<googleJavaFormat>
+							<version>1.22.0</version>
+						</googleJavaFormat>
+						<removeUnusedImports/>
+						<importOrder/>
+					</java>
+				</configuration>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>apply</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<!-- ====== Generar reporte de checkstyle: mvn clean site ====== -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<configLocation>src/main/resources/google_checks.xml</configLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+</project>

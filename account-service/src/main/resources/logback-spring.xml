@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Nombre de la aplicación -->
+    <springProperty
+            scope="context"
+            name="APP_NAME"
+            source="spring.application.name"
+            defaultValue="account-service"/>
+
+    <!-- Carpeta de logs -->
+    <property name="LOG_PATH" value="logs"/>
+
+    <!-- Patrón -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level ${APP_NAME} [%logger{36}] - %msg%n"/>
+
+    <!-- Consola -->
+    <appender name="CONSOLE"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Archivo -->
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                ${LOG_PATH}/${APP_NAME}-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- Frameworks -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.mongodb.driver" level="WARN"/>
+
+    <!-- Aplicación -->
+    <logger name="com.bank.account" level="DEBUG"/>
+
+    <!-- Root por defecto (si no hay perfil activo) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Desarrollo -->
+    <springProfile name="dev">
+        <logger name="com.bank.account" level="DEBUG"/>
+    </springProfile>
+
+    <!-- Producción -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>

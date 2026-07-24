@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: Credit Service API
+  description: |
+    Credit Service manages active financial products.
+
+    Responsibilities:
+      - Manage personal credits
+      - Manage business credits
+      - Manage credit cards
+      - Register credit payments
+      - Register credit card consumption
+      - Consult balances
+      - Consult product movements
+  version: 1.0.0
+servers:
+  - url: http://localhost:8083
+tags:
+  - name: Credits
+    description: Credit management
+  - name: Credit Cards
+    description: Credit card management
+paths:
+  /api/v1/credits:
+    post:
+      tags:
+        - Credits
+      summary: Create credit
+      operationId: createCredit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditRequest"
+      responses:
+        "201":
+          description: Credit created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          $ref: "#/components/responses/Conflict"
+    get:
+      tags:
+        - Credits
+      summary: Find customer credits
+      operationId: findCredits
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            $ref: "#/components/schemas/CreditType"
+        - name: status
+          in: query
+          schema:
+            $ref: "#/components/schemas/CreditStatus"
+      responses:
+        "200":
+          description: Credits found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreditResponse"
+  /api/v1/credits/{creditId}:
+    get:
+      tags:
+        - Credits
+      summary: Find credit by id
+      operationId: findCreditById
+      parameters:
+        - name: creditId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Credit found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/v1/credits/{creditId}/payments:
+    post:
+      tags:
+        - Credits
+      summary: Pay credit
+      operationId: payCredit
+      parameters:
+        - name: creditId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+      responses:
+        "201":
+          description: Payment registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentResponse"
+  /api/v1/credit-cards:
+    post:
+      tags:
+        - Credit Cards
+      summary: Create credit card
+      operationId: createCreditCard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreditCardRequest"
+      responses:
+        "201":
+          description: Credit card created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreditCardResponse"
+    get:
+      tags:
+        - Credit Cards
+      summary: Find customer credit cards
+      operationId: findCreditCards
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cards found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CreditCardResponse"
+  /api/v1/credit-cards/{cardId}/consumptions:
+    post:
+      tags:
+        - Credit Cards
+      summary: Register card consumption
+      operationId: createConsumption
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsumptionRequest"
+      responses:
+        "201":
+          description: Consumption registered
+  /api/v1/products/{productId}/balance:
+    get:
+      tags:
+        - Credits
+      summary: Get product balance
+      operationId: getBalance
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Balance information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BalanceResponse"
+  /api/v1/products/{productId}/transactions:
+    get:
+      tags:
+        - Credits
+      summary: Get product movements
+      operationId: findTransactions
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Transactions found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TransactionResponse"
+components:
+  schemas:
+    CreditRequest:
+      type: object
+      required:
+        - customerId
+        - type
+        - amount
+      properties:
+        customerId:
+          type: string
+        type:
+          $ref: "#/components/schemas/CreditType"
+        amount:
+          type: number
+        termMonths:
+          type: integer
+    CreditResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        type:
+          $ref: "#/components/schemas/CreditType"
+        amount:
+          type: number
+        balance:
+          type: number
+        status:
+          $ref: "#/components/schemas/CreditStatus"
+        createdAt:
+          type: string
+          format: date-time
+    CreditType:
+      type: string
+      enum:
+        - PERSONAL
+        - BUSINESS
+    CreditStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - PAID
+        - CANCELLED
+    CreditCardRequest:
+      type: object
+      required:
+        - customerId
+        - limit
+      properties:
+        customerId:
+          type: string
+        limit:
+          type: number
+    CreditCardResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        limit:
+          type: number
+        availableLimit:
+          type: number
+        status:
+          type: string
+    PaymentRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+    PaymentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        amount:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+    ConsumptionRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: number
+        description:
+          type: string
+    BalanceResponse:
+      type: object
+      properties:
+        productId:
+          type: string
+        balance:
+          type: number
+        availableBalance:
+          type: number
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        amount:
+          type: number
+        balanceAfter:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        traceId:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

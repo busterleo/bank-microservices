@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: credit-service
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/credit-db
+  cloud:
+    config:
+      enabled: false
+server:
+  port: 8083
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      creditService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+
+services:
+  customer:
+    url: http://localhost:8081

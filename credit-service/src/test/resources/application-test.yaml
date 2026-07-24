@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/credit-test
+eureka:
+  client:
+    enabled: false

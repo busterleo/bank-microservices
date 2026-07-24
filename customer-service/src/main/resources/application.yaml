@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: customer-service
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/customer-db
+  cloud:
+    config:
+      enabled: false
+server:
+  port: 8081
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      customerService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50

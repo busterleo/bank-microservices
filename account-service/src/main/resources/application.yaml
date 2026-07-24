@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: account-service
+  profiles:
+    active: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/account-db
+  cloud:
+    config:
+      enabled: false
+server:
+  port: 8082
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      accountService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+services:
+  customer:
+    url: http://localhost:8081
