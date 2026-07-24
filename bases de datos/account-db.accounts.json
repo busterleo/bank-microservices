@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "6a613da4ed56b97d7f79c517"
+  },
+  "customerId": "6a6065649c34f808b444fc27",
+  "accountNumber": "0011000000001",
+  "accountType": "SAVINGS",
+  "currency": "PEN",
+  "balance": "0",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T22:01:08.185Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-22T22:01:08.185Z"
+  },
+  "_class": "com.bank.account.infrastructure.entity.AccountDocument"
+},
+{
+  "_id": {
+    "$oid": "6a613e8eed56b97d7f79c518"
+  },
+  "customerId": "6a6065649c34f808b444fc27",
+  "accountNumber": "0011000000002",
+  "accountType": "CHECKING",
+  "currency": "PEN",
+  "balance": "0",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T22:05:02.121Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-22T22:05:02.121Z"
+  },
+  "_class": "com.bank.account.infrastructure.entity.AccountDocument"
+},
+{
+  "_id": {
+    "$oid": "6a613f69ed56b97d7f79c519"
+  },
+  "customerId": "6a6065649c34f808b444fc27",
+  "accountNumber": "0011000000003",
+  "accountType": "FIXED_TERM",
+  "currency": "PEN",
+  "balance": "0",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T22:08:41.247Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-22T22:08:41.247Z"
+  },
+  "_class": "com.bank.account.infrastructure.entity.AccountDocument"
+},
+{
+  "_id": {
+    "$oid": "6a6144b0279125a5e1ac1c90"
+  },
+  "customerId": "6a60656e9c34f808b444fc28",
+  "accountNumber": "0011000000001",
+  "accountType": "CHECKING",
+  "currency": "PEN",
+  "balance": "0",
+  "status": "INACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T22:31:12.546Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-23T15:21:37.753Z"
+  },
+  "_class": "com.bank.account.infrastructure.entity.AccountDocument"
+},
+{
+  "_id": {
+    "$oid": "6a614528279125a5e1ac1c92"
+  },
+  "customerId": "6a60656e9c34f808b444fc28",
+  "accountNumber": "0011000000003",
+  "accountType": "CHECKING",
+  "currency": "PEN",
+  "balance": "0",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T22:33:12.441Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-22T22:33:12.441Z"
+  },
+  "_class": "com.bank.account.infrastructure.entity.AccountDocument"
+}]

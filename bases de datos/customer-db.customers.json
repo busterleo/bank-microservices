@@ -1,0 +1,82 @@
+[{
+  "_id": {
+    "$oid": "6a6065649c34f808b444fc27"
+  },
+  "customerType": "PERSONAL",
+  "documentType": "DNI",
+  "documentNumber": "72889999",
+  "firstName": "Juan Carlos",
+  "lastName": "Perez",
+  "email": "juan.perez-new@test.com",
+  "phone": "999999999",
+  "address": "Av. Peru 123",
+  "status": "INACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T06:38:28.666Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-23T23:19:24.288Z"
+  },
+  "_class": "com.bank.customer.infrastructure.entity.CustomerDocument"
+},
+{
+  "_id": {
+    "$oid": "6a60656e9c34f808b444fc28"
+  },
+  "customerType": "BUSINESS",
+  "documentType": "RUC",
+  "documentNumber": "20123456789",
+  "businessName": "ABC Corporation Updated",
+  "email": "nuevo-contacto@abc.com",
+  "phone": "+51999999999",
+  "address": "ABC Corporation Updated",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-22T06:38:38.022Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-23T23:18:27.328Z"
+  },
+  "_class": "com.bank.customer.infrastructure.entity.CustomerDocument"
+},
+{
+  "_id": {
+    "$oid": "6a62a095b403d84ae83e1fe1"
+  },
+  "customerType": "PERSONAL",
+  "documentType": "DNI",
+  "documentNumber": "728893454",
+  "firstName": "Juan",
+  "lastName": "Perez",
+  "email": "juan.perez@email.com",
+  "phone": "+51999999999",
+  "address": "Av. Example 123 Lima",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-23T23:15:33.423Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-23T23:15:33.423Z"
+  },
+  "_class": "com.bank.customer.infrastructure.entity.CustomerDocument"
+},
+{
+  "_id": {
+    "$oid": "6a62a0c6b403d84ae83e1fe2"
+  },
+  "customerType": "BUSINESS",
+  "documentType": "RUC",
+  "documentNumber": "20123456456",
+  "businessName": "ABC Corporation",
+  "email": "contacto@abc.com",
+  "phone": "+51988888888",
+  "address": "Av. Empresarial 456 Lima",
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-23T23:16:22.901Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-23T23:16:22.901Z"
+  },
+  "_class": "com.bank.customer.infrastructure.entity.CustomerDocument"
+}]

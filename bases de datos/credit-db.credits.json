@@ -1,0 +1,45 @@
+[{
+  "_id": "b4c7d34b-ebfd-4872-bd82-82cc6f887cd6",
+  "customerId": "6a6065649c34f808b444fc27",
+  "type": "PERSONAL",
+  "amount": "5000",
+  "balance": "5000",
+  "termMonths": 24,
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-23T22:45:17.877Z"
+  },
+  "payments": [],
+  "transactions": [],
+  "_class": "com.bank.credit.infrastructure.entity.CreditDocument"
+},
+{
+  "_id": "801d54df-088f-4d3c-b04b-09d944b11bd7",
+  "customerId": "6a60656e9c34f808b444fc28",
+  "type": "BUSINESS",
+  "amount": "5000",
+  "balance": "4000",
+  "termMonths": 24,
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-23T22:50:44.420Z"
+  },
+  "payments": [],
+  "transactions": [],
+  "_class": "com.bank.credit.infrastructure.entity.CreditDocument"
+},
+{
+  "_id": "375a849f-4676-4b73-b648-4f66fcbf887c",
+  "customerId": "6a60656e9c34f808b444fc28",
+  "type": "BUSINESS",
+  "amount": "5000",
+  "balance": "5000",
+  "termMonths": 24,
+  "status": "ACTIVE",
+  "createdAt": {
+    "$date": "2026-07-23T22:51:04.462Z"
+  },
+  "payments": [],
+  "transactions": [],
+  "_class": "com.bank.credit.infrastructure.entity.CreditDocument"
+}]
